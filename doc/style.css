@@ -676,10 +676,105 @@ code {
   height: auto;
 }
 
-/* Invert Mermaid diagram colors in light mode */
-[data-theme="light"] .architecture pre.mermaid {
-  filter: invert(1) hue-rotate(180deg);
+/* ============================================
+   Mermaid Dark Theme (default)
+   ============================================ */
+.mermaid .node rect,
+.mermaid .node polygon,
+.mermaid .node circle,
+.mermaid .node ellipse {
+  fill: var(--bg-secondary) !important;
+  stroke: var(--border) !important;
 }
+
+.mermaid .cluster rect {
+  fill: var(--bg-code) !important;
+  stroke: var(--border) !important;
+}
+
+.mermaid .nodeLabel,
+.mermaid .cluster-label .nodeLabel,
+.mermaid .label {
+  color: var(--text-primary) !important;
+  fill: var(--text-primary) !important;
+}
+
+.mermaid .edgeLabel {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mermaid .edgeLabel rect {
+  fill: var(--bg-secondary) !important;
+}
+
+.mermaid .edgeLabel span,
+.mermaid .edgeLabel p {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mermaid .edgePath .path,
+.mermaid .flowchart-link {
+  stroke: var(--accent) !important;
+}
+
+.mermaid .marker,
+.mermaid .arrowheadPath {
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+}
+
+/* ============================================
+   Mermaid Light Theme
+   ============================================ */
+[data-theme="light"] .mermaid .node rect,
+[data-theme="light"] .mermaid .node polygon,
+[data-theme="light"] .mermaid .node circle,
+[data-theme="light"] .mermaid .node ellipse {
+  fill: #ffffff !important;
+  stroke: var(--border) !important;
+}
+
+[data-theme="light"] .mermaid .cluster rect {
+  fill: var(--bg-secondary) !important;
+  stroke: var(--border) !important;
+}
+
+[data-theme="light"] .mermaid .nodeLabel,
+[data-theme="light"] .mermaid .cluster-label .nodeLabel,
+[data-theme="light"] .mermaid .label {
+  color: var(--text-primary) !important;
+  fill: var(--text-primary) !important;
+}
+
+[data-theme="light"] .mermaid .edgeLabel {
+  background-color: #ffffff !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .mermaid .edgeLabel rect {
+  fill: #ffffff !important;
+}
+
+[data-theme="light"] .mermaid .edgeLabel span,
+[data-theme="light"] .mermaid .edgeLabel p {
+  background-color: #ffffff !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .mermaid .edgePath .path,
+[data-theme="light"] .mermaid .flowchart-link {
+  stroke: var(--accent) !important;
+}
+
+[data-theme="light"] .mermaid .marker,
+[data-theme="light"] .mermaid .arrowheadPath {
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+}
+
+
 
 /* ============================================
    Inline Code

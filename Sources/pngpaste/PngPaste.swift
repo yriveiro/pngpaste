@@ -50,7 +50,7 @@ struct PngPaste: AsyncParsableCommand {
     /// Performs the core paste operation: reading, rendering, and writing the image.
     ///
     /// Orchestrates the clipboard-to-output pipeline using dependency-injected services
-    /// for testability. Uses Swift 6.2's task naming (SE-0469) for improved debugging.
+    /// for testability.
     ///
     /// - Parameters:
     ///   - mode: The output destination mode.

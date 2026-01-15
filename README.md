@@ -64,7 +64,7 @@ pngpaste -b
 ### Options
 
 | Option | Description |
-|--------|-------------|
+| -------- | ------------- |
 | `-b` | Output to stdout as base64-encoded PNG |
 | `-h, --help` | Show help information |
 | `--version` | Show version number |
@@ -93,6 +93,7 @@ make setup
 ```
 
 This installs/updates the following tools via Homebrew (if available):
+
 - **swiftlint** - Swift linter
 - **swiftformat** - Swift code formatter
 - **shellcheck** - Bash script linter

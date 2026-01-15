@@ -212,6 +212,42 @@ header h1 span {
 [data-theme="light"] .theme-toggle .moon-icon { display: none; }
 
 /* ============================================
+   GitHub Link
+   ============================================ */
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  padding: var(--space-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast), 
+              border-color var(--transition-fast),
+              background var(--transition-fast);
+}
+
+.github-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.github-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.github-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ============================================
    CSS-Only Mobile Menu
    ============================================ */
 .mobile-menu-checkbox {
@@ -793,7 +829,7 @@ code {
    ============================================ */
 .copy-btn {
   position: absolute;
-  top: calc(var(--space-lg) + var(--space-sm));
+  top: calc(var(--space-lg) + var(--space-md) + var(--space-xs));
   inset-inline-end: var(--space-sm);
   display: flex;
   align-items: center;

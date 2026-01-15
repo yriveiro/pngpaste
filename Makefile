@@ -156,39 +156,28 @@ format-check-bash: ## Check bash formatting without changes
 check: lint format-check test ## Run lint + format-check + test
 	$(Q)echo "✓ All checks passed"
 
-setup: ## Install development dependencies
-	$(Q)echo "Installing development dependencies..."
+setup: ## Install/update development dependencies
+	$(Q)echo "Setting up development dependencies..."
 	$(Q)echo ""
 	$(Q)if command -v $(BREW) >/dev/null 2>&1; then \
-		echo "Using Homebrew to install tools..."; \
-		echo ""; \
-		echo "── swiftlint ───────────────────────────"; \
-		echo ""; \
-		$(BREW) install swiftlint || echo "⚠ swiftlint failed (may require full Xcode.app)"; \
-		echo ""; \
-		echo "── swiftformat ─────────────────────────"; \
-		echo ""; \
-		$(BREW) install swiftformat || echo "⚠ swiftformat failed"; \
-		echo ""; \
-		echo "── shellcheck ──────────────────────────"; \
-		echo ""; \
-		$(BREW) install shellcheck || echo "⚠ shellcheck failed"; \
-		echo ""; \
-		echo "── shfmt ──────────────────────────────"; \
-		echo ""; \
-		$(BREW) install shfmt || echo "⚠ shfmt failed"; \
+		$(BREW) install swiftlint swiftformat shellcheck shfmt >/dev/null 2>&1 || true; \
+		$(BREW) upgrade swiftlint swiftformat shellcheck shfmt >/dev/null 2>&1 || true; \
 	else \
-		echo "Homebrew not found. Install tools manually or get Homebrew from https://brew.sh"; \
+		echo "Homebrew not found. Please install the following tools manually:"; \
+		echo "  - swiftlint:   https://github.com/realm/SwiftLint"; \
+		echo "  - swiftformat: https://github.com/nicklockwood/SwiftFormat"; \
+		echo "  - shellcheck:  https://github.com/koalaman/shellcheck"; \
+		echo "  - shfmt:       https://github.com/mvdan/sh"; \
+		echo ""; \
+		echo "Or install Homebrew from https://brew.sh and run 'make setup' again."; \
+		echo ""; \
 	fi
-	$(Q)echo ""
 	$(Q)echo "────────────────────────────────────────"
-	$(Q)echo ""
 	$(Q)echo "Tool status:"
-	$(Q)echo "  swiftlint:   $$(swiftlint version 2>/dev/null || echo 'not found')"
-	$(Q)echo "  swiftformat: $$(swiftformat --version 2>/dev/null || echo 'not found')"
-	$(Q)echo "  shellcheck:  $$(shellcheck --version 2>/dev/null | head -2 | tail -1 || echo 'not found')"
-	$(Q)echo "  shfmt:       $$(shfmt --version 2>/dev/null || echo 'not found')"
-	$(Q)echo ""
+	$(Q)echo "  swiftlint:   $$($(SWIFTLINT) version 2>/dev/null || echo 'not found')"
+	$(Q)echo "  swiftformat: $$($(SWIFTFORMAT) --version 2>/dev/null || echo 'not found')"
+	$(Q)echo "  shellcheck:  $$($(SHELLCHECK) --version 2>/dev/null | head -2 | tail -1 || echo 'not found')"
+	$(Q)echo "  shfmt:       $$($(SHFMT) --version 2>/dev/null || echo 'not found')"
 	$(Q)echo "────────────────────────────────────────"
 
 help: ## Show this help

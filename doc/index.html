@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="pngpaste - A macOS command-line tool that pastes images from the system clipboard to files. Supports PNG, PDF, GIF, TIFF, JPEG, and HEIC formats.">
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://yriveiro.github.io/pngpaste/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yriveiro.github.io/pngpaste/">
+  <meta property="og:title" content="pngpaste - Clipboard to Image File for macOS">
+  <meta property="og:description" content="A macOS command-line tool that pastes images from the system clipboard to files. Built with Swift 6.1, supports PNG, PDF, GIF, TIFF, JPEG, and HEIC.">
+  <meta property="og:image" content="https://yriveiro.github.io/pngpaste/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="pngpaste">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://yriveiro.github.io/pngpaste/">
+  <meta name="twitter:title" content="pngpaste - Clipboard to Image File for macOS">
+  <meta name="twitter:description" content="A macOS command-line tool that pastes images from the system clipboard to files. Built with Swift 6.1.">
+  <meta name="twitter:image" content="https://yriveiro.github.io/pngpaste/og-image.png">
+  
+  <!-- Additional SEO -->
+  <meta name="author" content="Yago Riveiro">
+  <meta name="keywords" content="pngpaste, macOS, clipboard, image, paste, pbpaste, Swift, command-line, CLI, PNG, JPEG, GIF, TIFF">
+  <meta name="robots" content="index, follow">
+  
+  <title>pngpaste Documentation</title>
+  
+  <!-- Preconnect for external resources -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "pngpaste",
+    "description": "A macOS command-line tool that pastes images from the system clipboard to files, similar to how pbpaste works for text content.",
+    "url": "https://github.com/yriveiro/pngpaste",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS 14.0+",
+    "softwareVersion": "1.0.0",
+    "author": {
+      "@type": "Person",
+      "name": "Yago Riveiro",
+      "url": "https://github.com/yriveiro"
+    },
+    "license": "https://opensource.org/licenses/MIT",
+    "programmingLanguage": "Swift 6.1",
+    "codeRepository": "https://github.com/yriveiro/pngpaste",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Multiple input formats: PNG, PDF, GIF, TIFF, JPEG, HEIC",
+      "Multiple output formats: PNG, GIF, JPEG, TIFF",
+      "Output to file, stdout, or base64",
+      "PDF rasterization at 2x scale"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <header role="banner">
+    <h1><span>pngpaste</span> Documentation</h1>
+    <div class="header-controls">
+      <button class="theme-toggle" aria-label="Toggle theme" type="button">
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <label for="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+        <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </label>
+    </div>
+  </header>
+  
+  <!-- Hidden checkbox for CSS-only mobile menu toggle -->
+  <input type="checkbox" id="mobile-menu-toggle" class="mobile-menu-checkbox" aria-hidden="true">
+  
+  <nav aria-label="Main navigation">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#installation">Installation</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#cli">CLI</a>
+    <a href="#models">Models</a>
+    <a href="#protocols">Protocols</a>
+    <a href="#services">Services</a>
+  </nav>
+
+  <main id="main-content" role="main">
+    <!-- Overview Section -->
+    <section id="overview">
+      <div class="intro">
+        <h2>Overview</h2>
+        <p>
+          pngpaste is a macOS command-line tool that pastes images from the system clipboard to files,
+          similar to how <code class="inline-code">pbpaste</code> works for text content. Built with Swift 6.1
+          and a clean service-oriented architecture.
+        </p>
+        <div class="features">
+          <div class="feature">
+            <h4>Multiple Input Formats</h4>
+            <p>PNG, PDF, GIF, TIFF, JPEG, HEIC</p>
+          </div>
+          <div class="feature">
+            <h4>Multiple Output Formats</h4>
+            <p>PNG, GIF, JPEG, TIFF</p>
+          </div>
+          <div class="feature">
+            <h4>Flexible Output</h4>
+            <p>File, stdout, or base64</p>
+          </div>
+          <div class="feature">
+            <h4>PDF Support</h4>
+            <p>2x scale rasterization</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation">
+      <h2 class="section-header">
+        <span>Installation & Usage</span>
+        <button class="collapse-btn" aria-label="Toggle section" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="section-content">
+        
+        <div class="doc-row">
+          <div class="doc-content">
+            <h4>Requirements</h4>
+            <ul>
+              <li>macOS 14.0 (Sonoma) or later</li>
+              <li>Swift 6.1 or later (for building from source)</li>
+            </ul>
+            <h4>Install via Script</h4>
+            <p>
+              The easiest way to install pngpaste is via the install script. It automatically
+              detects your architecture (Intel or Apple Silicon) and downloads the appropriate binary.
+            </p>
+          </div>
+          <div class="code-content">
+            <div class="code-header">
+              <span class="filename">Terminal</span>
+              <span class="lines">One-line installation</span>
+            </div>
+            <pre><code><span class="comment"># Install via curl (recommended)</span>
+<span class="shell-command">curl</span> <span class="shell-flag">-fsSL</span> <span class="shell-url">https://raw.githubusercontent.com/yriveiro/pngpaste/main/scripts/install.sh</span> <span class="shell-pipe">|</span> <span class="shell-command">bash</span>
+
+<span class="comment"># Or with explicit confirmation skip</span>
+<span class="shell-command">curl</span> <span class="shell-flag">-fsSL</span> <span class="shell-url">https://raw.githubusercontent.com/yriveiro/pngpaste/main/scripts/install.sh</span> <span class="shell-pipe">|</span> <span class="shell-command">bash</span> <span class="shell-flag">-s</span> <span class="shell-flag">--</span> <span class="shell-flag">--yes</span>
+
+<span class="comment"># Custom install directory</span>
+<span class="shell-command">curl</span> <span class="shell-flag">-fsSL</span> <span class="shell-url">https://raw.githubusercontent.com/yriveiro/pngpaste/main/scripts/install.sh</span> <span class="shell-pipe">|</span> <span class="shell-command">bash</span> <span class="shell-flag">-s</span> <span class="shell-flag">--</span> <span class="shell-flag">--bin-dir</span> <span class="shell-arg">~/.local/bin</span>
+
+<span class="comment"># Verify installation</span>
+<span class="shell-command">pngpaste</span> <span class="shell-flag">--version</span></code></pre>
+          </div>
+        </div>
+
+        <div class="doc-row">
+          <div class="doc-content">
+            <h4>Build from Source</h4>
+            <p>
+              Clone the repository and build using Swift Package Manager. The release build
+              is optimized for performance.
+            </p>
+            <div class="param">
+              <span class="param-name">Debug build</span>
+              <p class="param-desc">For development and testing</p>
+            </div>
+            <div class="param">
+              <span class="param-name">Release build</span>
+              <p class="param-desc">Optimized for production use</p>
+            </div>
+          </div>
+          <div class="code-content">
+            <div class="code-header">
+              <span class="filename">Terminal</span>
+              <span class="lines">Build from source</span>
+            </div>
+            <pre><code><span class="comment"># Clone the repository</span>
+<span class="shell-command">git</span> <span class="shell-arg">clone</span> <span class="shell-url">https://github.com/yriveiro/pngpaste.git</span>
+<span class="shell-command">cd</span> <span class="shell-arg">pngpaste</span>
+
+<span class="comment"># Build (debug)</span>
+<span class="shell-command">swift</span> <span class="shell-arg">build</span>
+
+<span class="comment"># Build (release)</span>
+<span class="shell-command">swift</span> <span class="shell-arg">build</span> <span class="shell-flag">-c</span> <span class="shell-arg">release</span>
+
+<span class="comment"># Run directly</span>
+<span class="shell-command">swift</span> <span class="shell-arg">run</span> <span class="shell-arg">pngpaste</span> <span class="shell-arg">output.png</span>
+
+<span class="comment"># Install to /usr/local/bin</span>
+<span class="shell-command">cp</span> <span class="shell-arg">.build/release/pngpaste</span> <span class="shell-arg">/usr/local/bin/</span></code></pre>
+          </div>
+        </div>
+
+        <div class="doc-row">
+          <div class="doc-content">
+            <h4>Basic Usage</h4>
+            <p>
+              Copy an image to your clipboard (e.g., screenshot with <code class="inline-code">Cmd+Shift+4</code>
+              or copy from any application), then use pngpaste to save it.
+            </p>
+            <h4>Output Modes</h4>
+            <ul>
+              <li><strong>File:</strong> Save to a specific path</li>
+              <li><strong>Stdout:</strong> Pipe binary output</li>
+              <li><strong>Base64:</strong> Output as base64 string</li>
+            </ul>
+          </div>
+          <div class="code-content">
+            <div class="code-header">
+              <span class="filename">Terminal</span>
+              <span class="lines">Usage examples</span>
+            </div>
+            <pre><code><span class="comment"># Save clipboard image to PNG file</span>
+<span class="shell-command">pngpaste</span> <span class="shell-arg">screenshot.png</span>
+
+<span class="comment"># Save as JPEG (format determined by extension)</span>
+<span class="shell-command">pngpaste</span> <span class="shell-arg">photo.jpg</span>
+
+<span class="comment"># Save as GIF</span>
+<span class="shell-command">pngpaste</span> <span class="shell-arg">animation.gif</span>
+
+<span class="comment"># Output to stdout (pipe to another command)</span>
+<span class="shell-command">pngpaste</span> <span class="shell-arg">-</span> <span class="shell-pipe">|</span> <span class="shell-command">convert</span> <span class="shell-arg">-</span> <span class="shell-flag">-resize</span> <span class="shell-arg">50%</span> <span class="shell-arg">smaller.png</span>
+
+<span class="comment"># Output as base64 (useful for embedding)</span>
+<span class="shell-command">pngpaste</span> <span class="shell-flag">-b</span> <span class="shell-pipe">|</span> <span class="shell-command">pbcopy</span>
+
+<span class="comment"># Combine with other tools</span>
+<span class="shell-command">pngpaste</span> <span class="shell-arg">-</span> <span class="shell-pipe">|</span> <span class="shell-command">base64</span> <span class="shell-pipe">|</span> <span class="shell-command">curl</span> <span class="shell-flag">-X</span> <span class="shell-arg">POST</span> <span class="shell-flag">-d</span> <span class="shell-arg">@-</span> <span class="shell-arg">api.example.com/upload</span></code></pre>
+          </div>
+        </div>
+
+        <div class="doc-row">
+          <div class="doc-content">
+            <h4>Error Handling</h4>
+            <p>
+              pngpaste provides clear error messages when something goes wrong.
+              Exit code <code class="inline-code">0</code> indicates success, 
+              non-zero indicates an error.
+            </p>
+            <h4>Common Errors</h4>
+            <ul>
+              <li><strong>No image:</strong> Clipboard is empty or contains text</li>
+              <li><strong>Unsupported format:</strong> Clipboard contains unsupported image type</li>
+              <li><strong>Write failure:</strong> Cannot write to the specified path</li>
+            </ul>
+          </div>
+          <div class="code-content">
+            <div class="code-header">
+              <span class="filename">Terminal</span>
+              <span class="lines">Error handling</span>
+            </div>
+            <pre><code><span class="comment"># Check if clipboard has an image</span>
+<span class="keyword">if</span> <span class="shell-command">pngpaste</span> <span class="shell-arg">/tmp/test.png</span> <span class="shell-arg">2>/dev/null</span>; <span class="keyword">then</span>
+    <span class="shell-command">echo</span> <span class="string">"Image saved successfully"</span>
+<span class="keyword">else</span>
+    <span class="shell-command">echo</span> <span class="string">"No image on clipboard"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># Example error messages:</span>
+<span class="comment"># pngpaste: no image data found on the clipboard</span>
+<span class="comment"># pngpaste: failed to write to '/path': Permission denied</span>
+<span class="comment"># pngpaste: clipboard contains unsupported image format</span></code></pre>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture">
+      <h2 class="section-header">
+        <span>Architecture</span>
+        <button class="collapse-btn" aria-label="Toggle section" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="section-content">
+        <div class="architecture">
+          <pre class="mermaid">
+flowchart LR
+    subgraph CLI["CLI Layer"]
+        A[PngPaste]
+    end
+    
+    subgraph Protocols["Protocol Abstractions"]
+        P1[ClipboardReading]
+        P2[ImageRendering]
+        P3[OutputWriting]
+    end
+    
+    subgraph Services["Service Implementations"]
+        S1[ClipboardService]
+        S2["ImageRenderService
+@MainActor"]
+        S3[OutputService]
+    end
+    
+    subgraph Output["Output Destinations"]
+        O1[File]
+        O2[stdout]
+        O3[base64]
+    end
+    
+    A --> P1
+    A --> P2
+    A --> P3
+    
+    P1 -.-> S1
+    P2 -.-> S2
+    P3 -.-> S3
+    
+    S1 -->|NSPasteboard| IMG[/"PNG, TIFF, HEIC,
+JPEG, GIF, PDF"/]
+    S2 -->|Render| FMT[/"PNG, GIF,
+JPEG, TIFF"/]
+    S3 --> O1
+    S3 --> O2
+    S3 --> O3
+          </pre>
+        </div>
+        
+        <div class="doc-row">
+        <div class="doc-content">
+          <h4>Design Principles</h4>
+          <p>The project follows a <strong>clean service-oriented architecture</strong> with protocol-based dependency injection:</p>
+          <ul>
+            <li><strong>Separation of Concerns:</strong> Each service has a single responsibility</li>
+            <li><strong>Protocol Abstractions:</strong> Services implement protocols for testability</li>
+            <li><strong>Dependency Injection:</strong> Services are injected with default implementations</li>
+            <li><strong>Swift Concurrency:</strong> Uses Swift 6 typed throws and @MainActor</li>
+          </ul>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">PngPaste.swift</span>
+            <span class="lines">Pipeline orchestration</span>
+          </div>
+          <pre><code><span class="keyword">private func</span> <span class="function">performPaste</span>(
+    mode: <span class="type">OutputMode</span>,
+    format: <span class="type">OutputFormat</span>,
+    clipboardService: <span class="keyword">some</span> <span class="type">ClipboardReading</span> = <span class="type">ClipboardService</span>(),
+    renderService: <span class="keyword">some</span> <span class="type">ImageRendering</span> = <span class="type">ImageRenderService</span>(),
+    outputService: <span class="keyword">some</span> <span class="type">OutputWriting</span> = <span class="type">OutputService</span>()
+) <span class="keyword">async throws</span>(<span class="type">PngPasteError</span>) {
+    <span class="keyword">let</span> image = <span class="keyword">try</span> clipboardService.<span class="function">readImage</span>()
+    <span class="keyword">let</span> imageType = <span class="keyword">try</span> clipboardService.<span class="function">imageType</span>(for: image)
+    <span class="keyword">let</span> data = <span class="keyword">try await</span> renderService.<span class="function">render</span>(image, imageType: imageType, as: format)
+
+    <span class="keyword">try</span> outputService.<span class="function">write</span>(data, to: mode)
+}</code></pre>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- CLI Section -->
+    <section id="cli">
+      <h2 class="section-header">
+        <span>Command Line Interface</span>
+        <button class="collapse-btn" aria-label="Toggle section" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="section-content">
+      
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>PngPaste</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/attributes/#main" target="_blank" rel="noopener noreferrer" class="tag tag-struct">@main struct</a>
+          <a href="https://swiftpackageindex.com/apple/swift-argument-parser/documentation/argumentparser/asyncparsablecommand" target="_blank" rel="noopener noreferrer" class="tag tag-throws">AsyncParsableCommand</a>
+          <p>
+            The main command-line interface for pngpaste. Similar to how <code class="inline-code">pbpaste</code> 
+            works for text, pngpaste extracts images from the macOS clipboard and saves them to files or 
+            outputs them to stdout.
+          </p>
+          <h4>Command Options</h4>
+          <div class="param">
+            <span class="param-name">-b, --base64</span>
+            <p class="param-desc">Output to stdout as base64 encoded PNG</p>
+          </div>
+          <div class="param">
+            <span class="param-name">&lt;output-path&gt;</span>
+            <p class="param-desc">Output file path (use '-' for binary stdout)</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">PngPaste.swift</span>
+            <span class="lines">Lines 1-27</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">AppKit</span>
+<span class="keyword">import</span> <span class="type">ArgumentParser</span>
+
+<span class="keyword">@main</span>
+<span class="keyword">struct</span> <span class="type">PngPaste</span>: <span class="type">AsyncParsableCommand</span> {
+    <span class="keyword">static let</span> configuration = <span class="type">CommandConfiguration</span>(
+        commandName: <span class="string">"pngpaste"</span>,
+        abstract: <span class="string">"Paste PNG into files, much like pbpaste does for text."</span>,
+        discussion: <span class="string">"""
+        Supported input formats: PNG, PDF, GIF, TIF, JPEG, HEIC
+        Supported output formats: PNG, GIF, JPEG, TIFF
+        Output format is determined by the file extension, defaulting to PNG.
+        """</span>,
+        version: <span class="string">"1.0.0"</span>
+    )
+
+    <span class="keyword">@Flag</span>(name: .short, help: <span class="string">"Output to stdout as base64 encoded PNG"</span>)
+    <span class="keyword">var</span> base64 = <span class="keyword">false</span>
+
+    <span class="keyword">@Argument</span>(help: <span class="string">"Output file path (use '-' for binary stdout)"</span>)
+    <span class="keyword">var</span> outputPath: <span class="type">String</span>?
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>run()</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/" target="_blank" rel="noopener noreferrer" class="tag tag-throws">async throws</a>
+          <p>
+            Executes the pngpaste command. Determines the output mode and format from command-line 
+            arguments, then performs the paste operation.
+          </p>
+          <div class="signature"><span class="keyword">mutating func</span> <span class="function">run</span>() <span class="keyword">async throws</span></div>
+          <div class="param">
+            <span class="param-name">Throws</span>
+            <p class="param-desc"><code class="inline-code">CleanExit.helpRequest</code> if no output mode is specified, or <code class="inline-code">ExitCode.failure</code> if the paste operation fails.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">PngPaste.swift</span>
+            <span class="lines">Lines 35-48</span>
+          </div>
+          <pre><code><span class="keyword">mutating func</span> <span class="function">run</span>() <span class="keyword">async throws</span> {
+    <span class="keyword">guard let</span> mode = <span class="function">determineOutputMode</span>() <span class="keyword">else</span> {
+        <span class="keyword">throw</span> <span class="type">CleanExit</span>.<span class="function">helpRequest</span>()
+    }
+
+    <span class="keyword">let</span> format = <span class="function">determineOutputFormat</span>(for: mode)
+
+    <span class="keyword">do</span> {
+        <span class="keyword">try await</span> <span class="function">performPaste</span>(mode: mode, format: format)
+    } <span class="keyword">catch</span> {
+        <span class="function">fputs</span>(<span class="string">"pngpaste: \(error.description)\n"</span>, stderr)
+        <span class="keyword">throw</span> <span class="type">ExitCode</span>.failure
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>determineOutputMode()</h4>
+          <p>
+            Determines the output mode based on command-line arguments. Evaluates the <code class="inline-code">base64</code> 
+            flag and <code class="inline-code">outputPath</code> argument to determine whether output should be written 
+            to a file, stdout as binary, or stdout as base64-encoded data.
+          </p>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">determineOutputMode</span>() -> <span class="type">OutputMode</span>?</div>
+          <div class="param">
+            <span class="param-name">Returns</span>
+            <p class="param-desc">The determined <code class="inline-code">OutputMode</code>, or <code class="inline-code">nil</code> if no valid output destination was specified.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">PngPaste.swift</span>
+            <span class="lines">Lines 83-93</span>
+          </div>
+          <pre><code><span class="keyword">private func</span> <span class="function">determineOutputMode</span>() -> <span class="type">OutputMode</span>? {
+    <span class="keyword">if</span> base64 {
+        <span class="keyword">return</span> .base64
+    }
+
+    <span class="keyword">guard let</span> path = outputPath <span class="keyword">else</span> {
+        <span class="keyword">return nil</span>
+    }
+
+    <span class="keyword">return</span> path == <span class="string">"-"</span> ? .stdout : .<span class="function">file</span>(path: path)
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>determineOutputFormat(for:)</h4>
+          <p>
+            Determines the output format based on the output mode. For file output, extracts the format 
+            from the file extension. For stdout and base64 modes, defaults to PNG format.
+          </p>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">determineOutputFormat</span>(for mode: <span class="type">OutputMode</span>) -> <span class="type">OutputFormat</span></div>
+          <div class="param">
+            <span class="param-name">mode</span>
+            <span class="param-type">OutputMode</span>
+            <p class="param-desc">The output mode to determine the format for.</p>
+          </div>
+          <div class="param">
+            <span class="param-name">Returns</span>
+            <p class="param-desc">The appropriate <code class="inline-code">OutputFormat</code> for the given mode.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">PngPaste.swift</span>
+            <span class="lines">Lines 102-109</span>
+          </div>
+          <pre><code><span class="keyword">private func</span> <span class="function">determineOutputFormat</span>(for mode: <span class="type">OutputMode</span>) -> <span class="type">OutputFormat</span> {
+    <span class="keyword">switch</span> mode {
+    <span class="keyword">case let</span> .<span class="function">file</span>(path):
+        <span class="type">OutputFormat</span>(fromFilename: path)
+    <span class="keyword">case</span> .stdout, .base64:
+        .png
+    }
+}</code></pre>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Models Section -->
+    <section id="models">
+      <h2 class="section-header">
+        <span>Models</span>
+        <button class="collapse-btn" aria-label="Toggle section" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="section-content">
+      
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>OutputFormat</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/" target="_blank" rel="noopener noreferrer" class="tag tag-enum">enum</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Defines the supported output image formats. Provides conversion utilities between file 
+            extensions and AppKit bitmap types.
+          </p>
+          <h4>Cases</h4>
+          <ul>
+            <li><code class="inline-code">.png</code> - PNG format (default)</li>
+            <li><code class="inline-code">.gif</code> - GIF format</li>
+            <li><code class="inline-code">.jpeg</code> - JPEG format (0.9 compression)</li>
+            <li><code class="inline-code">.tiff</code> - TIFF format</li>
+          </ul>
+          <h4>Properties</h4>
+          <div class="signature"><span class="keyword">var</span> <span class="property">bitmapType</span>: <span class="type">NSBitmapImageRep</span>.<span class="type">FileType</span></div>
+          <div class="signature"><span class="keyword">var</span> <span class="property">displayName</span>: <span class="type">String</span></div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Models/OutputFormat.swift</span>
+            <span class="lines">Lines 1-28</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">AppKit</span>
+
+<span class="keyword">enum</span> <span class="type">OutputFormat</span>: <span class="type">String</span>, <span class="type">CaseIterable</span>, <span class="type">Sendable</span>, <span class="type">Equatable</span> {
+    <span class="keyword">case</span> png
+    <span class="keyword">case</span> gif
+    <span class="keyword">case</span> jpeg
+    <span class="keyword">case</span> tiff
+
+    <span class="keyword">private static let</span> jpegCompressionQuality: <span class="type">Double</span> = <span class="number">0.9</span>
+
+    <span class="keyword">var</span> bitmapType: <span class="type">NSBitmapImageRep</span>.<span class="type">FileType</span> {
+        <span class="keyword">switch self</span> {
+        <span class="keyword">case</span> .png: .png
+        <span class="keyword">case</span> .gif: .gif
+        <span class="keyword">case</span> .jpeg: .jpeg
+        <span class="keyword">case</span> .tiff: .tiff
+        }
+    }
+
+    <span class="keyword">var</span> displayName: <span class="type">String</span> {
+        rawValue.<span class="function">uppercased</span>()
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>OutputFormat Initializers</h4>
+          <p>
+            Creates an output format from file extensions. Performs case-insensitive matching and 
+            supports common extension variations (e.g., both "jpg" and "jpeg" map to <code class="inline-code">.jpeg</code>).
+          </p>
+          <div class="signature"><span class="keyword">init</span>(fromExtension ext: <span class="type">String</span>)</div>
+          <div class="param">
+            <span class="param-name">init(fromExtension:)</span>
+            <p class="param-desc">Creates format from extension string without dot</p>
+          </div>
+          <div class="signature"><span class="keyword">init</span>(fromFilename filename: <span class="type">String</span>)</div>
+          <div class="param">
+            <span class="param-name">init(fromFilename:)</span>
+            <p class="param-desc">Extracts extension from filename path</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Models/OutputFormat.swift</span>
+            <span class="lines">Lines 49-71</span>
+          </div>
+          <pre><code><span class="keyword">init</span>(fromExtension ext: <span class="type">String</span>) {
+    <span class="keyword">switch</span> ext.<span class="function">lowercased</span>() {
+    <span class="keyword">case</span> <span class="string">"gif"</span>:
+        <span class="keyword">self</span> = .gif
+    <span class="keyword">case</span> <span class="string">"jpg"</span>, <span class="string">"jpeg"</span>:
+        <span class="keyword">self</span> = .jpeg
+    <span class="keyword">case</span> <span class="string">"tif"</span>, <span class="string">"tiff"</span>:
+        <span class="keyword">self</span> = .tiff
+    <span class="keyword">default</span>:
+        <span class="keyword">self</span> = .png
+    }
+}
+
+<span class="keyword">init</span>(fromFilename filename: <span class="type">String</span>) {
+    <span class="keyword">let</span> ext = <span class="type">URL</span>(fileURLWithPath: filename).pathExtension
+    <span class="keyword">self</span>.<span class="keyword">init</span>(fromExtension: ext)
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>OutputMode</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/" target="_blank" rel="noopener noreferrer" class="tag tag-enum">enum</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Defines the output destinations for image data.
+          </p>
+          <h4>Cases</h4>
+          <ul>
+            <li><code class="inline-code">.file(path: String)</code> - Write to file at path</li>
+            <li><code class="inline-code">.stdout</code> - Write binary to stdout</li>
+            <li><code class="inline-code">.base64</code> - Write base64 encoded to stdout</li>
+          </ul>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Models/OutputMode.swift</span>
+            <span class="lines">Complete file</span>
+          </div>
+          <pre><code><span class="keyword">enum</span> <span class="type">OutputMode</span>: <span class="type">Sendable</span>, <span class="type">Equatable</span> {
+    <span class="keyword">case</span> <span class="function">file</span>(path: <span class="type">String</span>)
+    <span class="keyword">case</span> stdout
+    <span class="keyword">case</span> base64
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ImageType</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/" target="_blank" rel="noopener noreferrer" class="tag tag-enum">enum</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Classifies source images to determine the appropriate rendering strategy.
+            PDF images require special rasterization during rendering.
+          </p>
+          <h4>Cases</h4>
+          <ul>
+            <li><code class="inline-code">.bitmap</code> - Standard bitmap images</li>
+            <li><code class="inline-code">.pdf</code> - PDF images requiring rasterization</li>
+          </ul>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Models/ImageType.swift</span>
+            <span class="lines">Complete file</span>
+          </div>
+          <pre><code><span class="keyword">enum</span> <span class="type">ImageType</span>: <span class="type">Sendable</span> {
+    <span class="keyword">case</span> bitmap
+    <span class="keyword">case</span> pdf
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>PngPasteError</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/" target="_blank" rel="noopener noreferrer" class="tag tag-enum">enum</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/" target="_blank" rel="noopener noreferrer" class="tag tag-throws">Error</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Defines all error cases that can occur during the paste operation.
+            Implements <code class="inline-code">CustomStringConvertible</code> for user-friendly messages.
+          </p>
+          <h4>Cases</h4>
+          <ul>
+            <li><code class="inline-code">.noImageOnClipboard</code> - No image data found</li>
+            <li><code class="inline-code">.unsupportedImageFormat</code> - Format not supported</li>
+            <li><code class="inline-code">.conversionFailed(format:)</code> - Conversion error</li>
+            <li><code class="inline-code">.writeFailure(path:reason:)</code> - File write error</li>
+            <li><code class="inline-code">.stdoutWriteFailure(reason:)</code> - Stdout write error</li>
+          </ul>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Models/PngPasteError.swift</span>
+            <span class="lines">Complete file</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">Foundation</span>
+
+<span class="keyword">enum</span> <span class="type">PngPasteError</span>: <span class="type">Error</span>, <span class="type">CustomStringConvertible</span>, <span class="type">Sendable</span>, <span class="type">Equatable</span> {
+    <span class="keyword">case</span> noImageOnClipboard
+    <span class="keyword">case</span> unsupportedImageFormat
+    <span class="keyword">case</span> <span class="function">conversionFailed</span>(format: <span class="type">String</span>)
+    <span class="keyword">case</span> <span class="function">writeFailure</span>(path: <span class="type">String</span>, reason: <span class="type">String</span>)
+    <span class="keyword">case</span> <span class="function">stdoutWriteFailure</span>(reason: <span class="type">String</span>)
+
+    <span class="keyword">var</span> description: <span class="type">String</span> {
+        <span class="keyword">switch self</span> {
+        <span class="keyword">case</span> .noImageOnClipboard:
+            <span class="string">"no image data found on the clipboard"</span>
+        <span class="keyword">case</span> .unsupportedImageFormat:
+            <span class="string">"clipboard contains unsupported image format"</span>
+        <span class="keyword">case let</span> .<span class="function">conversionFailed</span>(format):
+            <span class="string">"failed to convert image to \(format)"</span>
+        <span class="keyword">case let</span> .<span class="function">writeFailure</span>(path, reason):
+            <span class="string">"failed to write to '\(path)': \(reason)"</span>
+        <span class="keyword">case let</span> .<span class="function">stdoutWriteFailure</span>(reason):
+            <span class="string">"failed to write to stdout: \(reason)"</span>
+        }
+    }
+}</code></pre>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Protocols Section -->
+    <section id="protocols">
+      <h2 class="section-header">
+        <span>Protocols</span>
+        <button class="collapse-btn" aria-label="Toggle section" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="section-content">
+      
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ClipboardReading</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/" target="_blank" rel="noopener noreferrer" class="tag tag-protocol">protocol</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Defines the interface for reading image data from the system clipboard.
+            Supports multiple image formats including PNG, TIFF, HEIC, JPEG, GIF, and PDF.
+          </p>
+          <h4>Required Methods</h4>
+          <div class="signature"><span class="keyword">func</span> <span class="function">readImage</span>() <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">NSImage</span></div>
+          <div class="param">
+            <span class="param-name">readImage()</span>
+            <p class="param-desc">Reads and returns an image from the system pasteboard.</p>
+          </div>
+          <div class="signature"><span class="keyword">func</span> <span class="function">imageType</span>(for image: <span class="type">NSImage</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">ImageType</span></div>
+          <div class="param">
+            <span class="param-name">imageType(for:)</span>
+            <p class="param-desc">Determines the image type classification for rendering strategy.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Protocols/ClipboardReading.swift</span>
+            <span class="lines">Complete file</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">AppKit</span>
+
+<span class="keyword">protocol</span> <span class="type">ClipboardReading</span>: <span class="type">Sendable</span> {
+    <span class="keyword">func</span> <span class="function">readImage</span>() <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">NSImage</span>
+
+    <span class="keyword">func</span> <span class="function">imageType</span>(for image: <span class="type">NSImage</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">ImageType</span>
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ImageRendering</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/" target="_blank" rel="noopener noreferrer" class="tag tag-protocol">protocol</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Actors" target="_blank" rel="noopener noreferrer" class="tag tag-mainactor">@MainActor</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Defines the interface for rendering images to various output formats.
+            Marked <code class="inline-code">@MainActor</code> because it requires AppKit drawing operations.
+          </p>
+          <h4>Required Methods</h4>
+          <div class="signature"><span class="keyword">func</span> <span class="function">render</span>(_ image: <span class="type">NSImage</span>, imageType: <span class="type">ImageType</span>, as format: <span class="type">OutputFormat</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">Data</span></div>
+          <div class="param">
+            <span class="param-name">render(_:imageType:as:)</span>
+            <p class="param-desc">Renders an image to the specified output format. PDF images are rasterized at 2x scale.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Protocols/ImageRendering.swift</span>
+            <span class="lines">Complete file</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">AppKit</span>
+
+<span class="keyword">@MainActor</span>
+<span class="keyword">protocol</span> <span class="type">ImageRendering</span>: <span class="type">Sendable</span> {
+    <span class="keyword">func</span> <span class="function">render</span>(
+        _ image: <span class="type">NSImage</span>,
+        imageType: <span class="type">ImageType</span>,
+        as format: <span class="type">OutputFormat</span>
+    ) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">Data</span>
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>OutputWriting</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/" target="_blank" rel="noopener noreferrer" class="tag tag-protocol">protocol</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types" target="_blank" rel="noopener noreferrer" class="tag tag-sendable">Sendable</a>
+          <p>
+            Defines the interface for writing data to various output destinations.
+            Supports writing to files, standard output (binary), or standard output as base64.
+          </p>
+          <h4>Required Methods</h4>
+          <div class="signature"><span class="keyword">func</span> <span class="function">write</span>(_ data: <span class="type">Data</span>, to mode: <span class="type">OutputMode</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>)</div>
+          <div class="param">
+            <span class="param-name">write(_:to:)</span>
+            <p class="param-desc">Writes data to the specified output destination.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Protocols/OutputWriting.swift</span>
+            <span class="lines">Complete file</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">Foundation</span>
+
+<span class="keyword">protocol</span> <span class="type">OutputWriting</span>: <span class="type">Sendable</span> {
+    <span class="keyword">func</span> <span class="function">write</span>(_ data: <span class="type">Data</span>, to mode: <span class="type">OutputMode</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>)
+}</code></pre>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+      <h2 class="section-header">
+        <span>Services</span>
+        <button class="collapse-btn" aria-label="Toggle section" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="section-content">
+      
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ClipboardService</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/structures-and-classes/" target="_blank" rel="noopener noreferrer" class="tag tag-struct">struct</a>
+          <span class="tag tag-protocol">ClipboardReading</span>
+          <p>
+            A service that reads image data from the macOS system pasteboard.
+            Supports reading images in PNG, TIFF, HEIC, JPEG, GIF, and PDF formats
+            with automatic format detection.
+          </p>
+          <h4>Supported Pasteboard Types</h4>
+          <ul>
+            <li><code class="inline-code">.png</code> - PNG images</li>
+            <li><code class="inline-code">.tiff</code> - TIFF images</li>
+            <li><code class="inline-code">public.heic</code> - HEIC images</li>
+            <li><code class="inline-code">public.jpeg</code> - JPEG images</li>
+            <li><code class="inline-code">com.compuserve.gif</code> - GIF images</li>
+            <li><code class="inline-code">.pdf</code> - PDF documents</li>
+          </ul>
+          <h4>Methods</h4>
+          <div class="signature"><span class="keyword">func</span> <span class="function">readImage</span>() <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">NSImage</span></div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/ClipboardService.swift</span>
+            <span class="lines">Lines 1-42</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">AppKit</span>
+
+<span class="keyword">struct</span> <span class="type">ClipboardService</span>: <span class="type">ClipboardReading</span> {
+    <span class="keyword">private static let</span> supportedTypes: [<span class="type">NSPasteboard</span>.<span class="type">PasteboardType</span>] = [
+        .png,
+        .tiff,
+        <span class="type">NSPasteboard</span>.<span class="type">PasteboardType</span>(<span class="string">"public.heic"</span>),
+        <span class="type">NSPasteboard</span>.<span class="type">PasteboardType</span>(<span class="string">"public.jpeg"</span>),
+        <span class="type">NSPasteboard</span>.<span class="type">PasteboardType</span>(<span class="string">"com.compuserve.gif"</span>),
+        .pdf,
+    ]
+
+    <span class="keyword">func</span> <span class="function">readImage</span>() <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">NSImage</span> {
+        <span class="keyword">let</span> pasteboard = <span class="type">NSPasteboard</span>.general
+
+        <span class="keyword">if let</span> availableType = pasteboard.<span class="function">availableType</span>(from: <span class="type">Self</span>.supportedTypes),
+           <span class="keyword">let</span> data = pasteboard.<span class="function">data</span>(forType: availableType),
+           <span class="keyword">let</span> image = <span class="type">NSImage</span>(data: data),
+           <span class="function">isValidImage</span>(image) {
+            <span class="keyword">return</span> image
+        }
+
+        <span class="keyword">if</span> pasteboard.<span class="function">canReadItem</span>(withDataConformingToTypes: <span class="type">NSImage</span>.imageTypes),
+           <span class="keyword">let</span> image = <span class="type">NSImage</span>(pasteboard: pasteboard),
+           <span class="function">isValidImage</span>(image) {
+            <span class="keyword">return</span> image
+        }
+
+        <span class="keyword">throw</span> .noImageOnClipboard
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ClipboardService.imageType(for:)</h4>
+          <p>
+            Determines the image type classification for the given image.
+            Inspects the image's representations to determine whether it should be 
+            treated as a bitmap or PDF image. PDF images require special rasterization.
+          </p>
+          <div class="signature"><span class="keyword">func</span> <span class="function">imageType</span>(for image: <span class="type">NSImage</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">ImageType</span></div>
+          <div class="param">
+            <span class="param-name">image</span>
+            <span class="param-type">NSImage</span>
+            <p class="param-desc">The image to analyze.</p>
+          </div>
+          <div class="param">
+            <span class="param-name">Returns</span>
+            <p class="param-desc"><code class="inline-code">.pdf</code> if image contains a PDF representation, <code class="inline-code">.bitmap</code> otherwise.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/ClipboardService.swift</span>
+            <span class="lines">Lines 53-76</span>
+          </div>
+          <pre><code><span class="keyword">func</span> <span class="function">imageType</span>(for image: <span class="type">NSImage</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">ImageType</span> {
+    <span class="keyword">guard</span> <span class="function">isValidImage</span>(image) <span class="keyword">else</span> {
+        <span class="keyword">throw</span> .unsupportedImageFormat
+    }
+
+    <span class="keyword">if</span> image.representations.<span class="function">contains</span>(where: { $0 <span class="keyword">is</span> <span class="type">NSPDFImageRep</span> }) {
+        <span class="keyword">return</span> .pdf
+    }
+
+    <span class="keyword">if</span> image.representations.<span class="function">contains</span>(where: { $0 <span class="keyword">is</span> <span class="type">NSBitmapImageRep</span> }) {
+        <span class="keyword">return</span> .bitmap
+    }
+
+    <span class="keyword">if</span> image.tiffRepresentation != <span class="keyword">nil</span> {
+        <span class="keyword">return</span> .bitmap
+    }
+
+    <span class="keyword">throw</span> .unsupportedImageFormat
+}
+
+<span class="keyword">private func</span> <span class="function">isValidImage</span>(_ image: <span class="type">NSImage</span>) -> <span class="type">Bool</span> {
+    image.size.width > <span class="number">0</span> && image.size.height > <span class="number">0</span> && !image.representations.isEmpty
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ImageRenderService</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/structures-and-classes/" target="_blank" rel="noopener noreferrer" class="tag tag-struct">struct</a>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Actors" target="_blank" rel="noopener noreferrer" class="tag tag-mainactor">@MainActor</a>
+          <span class="tag tag-protocol">ImageRendering</span>
+          <p>
+            A service that renders images to various output formats.
+            Handles both bitmap and PDF source images, using appropriate rendering 
+            strategies for each type. PDF images are rasterized at 2x scale factor 
+            for improved quality.
+          </p>
+          <h4>Properties</h4>
+          <div class="param">
+            <span class="param-name">pdfScaleFactor</span>
+            <span class="param-type">CGFloat = 2.0</span>
+            <p class="param-desc">Scale factor for PDF rasterization</p>
+          </div>
+          <h4>Methods</h4>
+          <div class="signature"><span class="keyword">func</span> <span class="function">render</span>(_ image: <span class="type">NSImage</span>, imageType: <span class="type">ImageType</span>, as format: <span class="type">OutputFormat</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">Data</span></div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/ImageRenderService.swift</span>
+            <span class="lines">Lines 1-39</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">AppKit</span>
+
+<span class="keyword">@MainActor</span>
+<span class="keyword">struct</span> <span class="type">ImageRenderService</span>: <span class="type">ImageRendering</span> {
+    <span class="keyword">private let</span> pdfScaleFactor: <span class="type">CGFloat</span> = <span class="number">2.0</span>
+
+    <span class="keyword">func</span> <span class="function">render</span>(
+        _ image: <span class="type">NSImage</span>,
+        imageType: <span class="type">ImageType</span>,
+        as format: <span class="type">OutputFormat</span>
+    ) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) -> <span class="type">Data</span> {
+        <span class="keyword">let</span> data: <span class="type">Data</span>? = <span class="keyword">switch</span> imageType {
+        <span class="keyword">case</span> .bitmap:
+            <span class="function">renderBitmap</span>(image, as: format)
+        <span class="keyword">case</span> .pdf:
+            <span class="function">renderPDF</span>(image, as: format)
+        }
+
+        <span class="keyword">guard let</span> data <span class="keyword">else</span> {
+            <span class="keyword">throw</span> .<span class="function">conversionFailed</span>(format: format.displayName)
+        }
+
+        <span class="keyword">return</span> data
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ImageRenderService.renderBitmap(_:as:)</h4>
+          <p>
+            Renders a bitmap image to the specified output format.
+            First attempts direct representation conversion for efficiency. 
+            If that fails, falls back to creating a bitmap representation from 
+            the image's TIFF data.
+          </p>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">renderBitmap</span>(_ image: <span class="type">NSImage</span>, as format: <span class="type">OutputFormat</span>) -> <span class="type">Data</span>?</div>
+          <div class="param">
+            <span class="param-name">image</span>
+            <span class="param-type">NSImage</span>
+            <p class="param-desc">The bitmap image to render.</p>
+          </div>
+          <div class="param">
+            <span class="param-name">format</span>
+            <span class="param-type">OutputFormat</span>
+            <p class="param-desc">The target output format.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/ImageRenderService.swift</span>
+            <span class="lines">Lines 50-66</span>
+          </div>
+          <pre><code><span class="keyword">private func</span> <span class="function">renderBitmap</span>(_ image: <span class="type">NSImage</span>, as format: <span class="type">OutputFormat</span>) -> <span class="type">Data</span>? {
+    <span class="keyword">if let</span> data = <span class="type">NSBitmapImageRep</span>.<span class="function">representationOfImageReps</span>(
+        in: image.representations,
+        using: format.bitmapType,
+        properties: format.encodingProperties
+    ), !data.isEmpty {
+        <span class="keyword">return</span> data
+    }
+
+    <span class="keyword">guard let</span> tiffData = image.tiffRepresentation,
+          <span class="keyword">let</span> bitmapRep = <span class="type">NSBitmapImageRep</span>(data: tiffData)
+    <span class="keyword">else</span> {
+        <span class="keyword">return nil</span>
+    }
+
+    <span class="keyword">return</span> bitmapRep.<span class="function">representation</span>(using: format.bitmapType, properties: format.encodingProperties)
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>ImageRenderService.renderPDF(_:as:)</h4>
+          <p>
+            Renders a PDF image to the specified output format by rasterizing it.
+            Creates a bitmap representation at 2x the PDF's native resolution, 
+            draws the PDF content onto a white background, and encodes the result 
+            in the target format.
+          </p>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">renderPDF</span>(_ image: <span class="type">NSImage</span>, as format: <span class="type">OutputFormat</span>) -> <span class="type">Data</span>?</div>
+          <h4>Implementation Details</h4>
+          <ul>
+            <li>Uses 8 bits per sample, 4 samples per pixel (RGBA)</li>
+            <li>Creates context in deviceRGB color space</li>
+            <li>Fills with white background before drawing</li>
+            <li>Saves and restores graphics state</li>
+          </ul>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/ImageRenderService.swift</span>
+            <span class="lines">Lines 77-120</span>
+          </div>
+          <pre><code><span class="keyword">private func</span> <span class="function">renderPDF</span>(_ image: <span class="type">NSImage</span>, as format: <span class="type">OutputFormat</span>) -> <span class="type">Data</span>? {
+    <span class="keyword">guard let</span> pdfRep = image.representations
+        .<span class="function">compactMap</span>({ $0 <span class="keyword">as?</span> <span class="type">NSPDFImageRep</span> }).first <span class="keyword">else</span> {
+        <span class="keyword">return nil</span>
+    }
+
+    <span class="keyword">let</span> scaledWidth = <span class="type">Int</span>(pdfRep.bounds.width * pdfScaleFactor)
+    <span class="keyword">let</span> scaledHeight = <span class="type">Int</span>(pdfRep.bounds.height * pdfScaleFactor)
+
+    <span class="keyword">guard</span> scaledWidth > <span class="number">0</span>, scaledHeight > <span class="number">0</span> <span class="keyword">else</span> { <span class="keyword">return nil</span> }
+
+    <span class="keyword">guard let</span> bitmapRep = <span class="type">NSBitmapImageRep</span>(
+        bitmapDataPlanes: <span class="keyword">nil</span>,
+        pixelsWide: scaledWidth,
+        pixelsHigh: scaledHeight,
+        bitsPerSample: <span class="number">8</span>,
+        samplesPerPixel: <span class="number">4</span>,
+        hasAlpha: <span class="keyword">true</span>,
+        isPlanar: <span class="keyword">false</span>,
+        colorSpaceName: .deviceRGB,
+        bytesPerRow: <span class="number">0</span>,
+        bitsPerPixel: <span class="number">0</span>
+    ) <span class="keyword">else</span> { <span class="keyword">return nil</span> }
+
+    <span class="type">NSGraphicsContext</span>.<span class="function">saveGraphicsState</span>()
+    <span class="keyword">defer</span> { <span class="type">NSGraphicsContext</span>.<span class="function">restoreGraphicsState</span>() }
+
+    <span class="keyword">guard let</span> context = <span class="type">NSGraphicsContext</span>(bitmapImageRep: bitmapRep) <span class="keyword">else</span> {
+        <span class="keyword">return nil</span>
+    }
+
+    <span class="type">NSGraphicsContext</span>.current = context
+    <span class="type">NSColor</span>.white.<span class="function">setFill</span>()
+    <span class="type">NSRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: scaledWidth, height: scaledHeight).<span class="function">fill</span>()
+
+    <span class="keyword">let</span> drawRect = <span class="type">NSRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: scaledWidth, height: scaledHeight)
+    pdfRep.<span class="function">draw</span>(in: drawRect)
+
+    <span class="keyword">return</span> bitmapRep.<span class="function">representation</span>(using: format.bitmapType, properties: format.encodingProperties)
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>OutputService</h4>
+          <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/structures-and-classes/" target="_blank" rel="noopener noreferrer" class="tag tag-struct">struct</a>
+          <span class="tag tag-protocol">OutputWriting</span>
+          <p>
+            A service that writes image data to various output destinations.
+            Supports writing to files, standard output as binary data, or 
+            standard output as base64-encoded data.
+          </p>
+          <h4>Methods</h4>
+          <div class="signature"><span class="keyword">func</span> <span class="function">write</span>(_ data: <span class="type">Data</span>, to mode: <span class="type">OutputMode</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>)</div>
+          <ul>
+            <li><code class="inline-code">writeToFile(_:path:)</code> - Atomic file write</li>
+            <li><code class="inline-code">writeToStdout(_:)</code> - Binary stdout write</li>
+            <li><code class="inline-code">writeBase64ToStdout(_:)</code> - Base64 stdout write</li>
+          </ul>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/OutputService.swift</span>
+            <span class="lines">Lines 1-26</span>
+          </div>
+          <pre><code><span class="keyword">import</span> <span class="type">Foundation</span>
+
+<span class="keyword">struct</span> <span class="type">OutputService</span>: <span class="type">OutputWriting</span> {
+    <span class="keyword">func</span> <span class="function">write</span>(_ data: <span class="type">Data</span>, to mode: <span class="type">OutputMode</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) {
+        <span class="keyword">switch</span> mode {
+        <span class="keyword">case let</span> .<span class="function">file</span>(path):
+            <span class="keyword">try</span> <span class="function">writeToFile</span>(data, path: path)
+        <span class="keyword">case</span> .stdout:
+            <span class="keyword">try</span> <span class="function">writeToStdout</span>(data)
+        <span class="keyword">case</span> .base64:
+            <span class="keyword">try</span> <span class="function">writeBase64ToStdout</span>(data)
+        }
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-content">
+          <h4>OutputService Write Methods</h4>
+          <p>
+            Internal methods for writing data to different destinations.
+          </p>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">writeToFile</span>(_ data: <span class="type">Data</span>, path: <span class="type">String</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>)</div>
+          <div class="param">
+            <span class="param-name">writeToFile(_:path:)</span>
+            <p class="param-desc">Uses atomic writing to ensure data integrity. Path is normalized via URL standardization.</p>
+          </div>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">writeToStdout</span>(_ data: <span class="type">Data</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>)</div>
+          <div class="param">
+            <span class="param-name">writeToStdout(_:)</span>
+            <p class="param-desc">Writes binary data directly to FileHandle.standardOutput.</p>
+          </div>
+          <div class="signature"><span class="keyword">private func</span> <span class="function">writeBase64ToStdout</span>(_ data: <span class="type">Data</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>)</div>
+          <div class="param">
+            <span class="param-name">writeBase64ToStdout(_:)</span>
+            <p class="param-desc">Base64 encodes data before writing, suitable for text-based contexts.</p>
+          </div>
+        </div>
+        <div class="code-content">
+          <div class="code-header">
+            <span class="filename">Services/OutputService.swift</span>
+            <span class="lines">Lines 38-73</span>
+          </div>
+          <pre><code><span class="keyword">private func</span> <span class="function">writeToFile</span>(_ data: <span class="type">Data</span>, path: <span class="type">String</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) {
+    <span class="keyword">let</span> url = <span class="type">URL</span>(fileURLWithPath: path).standardized
+
+    <span class="keyword">do</span> {
+        <span class="keyword">try</span> data.<span class="function">write</span>(to: url, options: .atomic)
+    } <span class="keyword">catch</span> {
+        <span class="keyword">let</span> reason = (error <span class="keyword">as</span> <span class="type">NSError</span>).localizedDescription
+        <span class="keyword">throw</span> .<span class="function">writeFailure</span>(path: path, reason: reason)
+    }
+}
+
+<span class="keyword">private func</span> <span class="function">writeToStdout</span>(_ data: <span class="type">Data</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) {
+    <span class="keyword">let</span> stdout = <span class="type">FileHandle</span>.standardOutput
+
+    <span class="keyword">do</span> {
+        <span class="keyword">try</span> stdout.<span class="function">write</span>(contentsOf: data)
+    } <span class="keyword">catch</span> {
+        <span class="keyword">throw</span> .<span class="function">stdoutWriteFailure</span>(reason: error.localizedDescription)
+    }
+}
+
+<span class="keyword">private func</span> <span class="function">writeBase64ToStdout</span>(_ data: <span class="type">Data</span>) <span class="keyword">throws</span>(<span class="type">PngPasteError</span>) {
+    <span class="keyword">let</span> base64Data = data.<span class="function">base64EncodedData</span>()
+    <span class="keyword">try</span> <span class="function">writeToStdout</span>(base64Data)
+}</code></pre>
+        </div>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <p>
+      <strong>pngpaste</strong> - MIT License<br>
+      Built with Swift 6.1 | <a href="https://github.com/yriveiro/pngpaste" rel="noopener noreferrer">View on GitHub</a>
+    </p>
+  </footer>
+
+  <!-- Floating Navigation Widget -->
+  <div class="float-nav">
+    <a href="#overview" class="float-nav-btn" data-tooltip="Overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4M12 8h.01"/>
+      </svg>
+    </a>
+    <a href="#installation" class="float-nav-btn" data-tooltip="Installation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    </a>
+    <a href="#architecture" class="float-nav-btn" data-tooltip="Architecture">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </svg>
+    </a>
+    <a href="#cli" class="float-nav-btn" data-tooltip="CLI">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="4 17 10 11 4 5"/>
+        <line x1="12" y1="19" x2="20" y2="19"/>
+      </svg>
+    </a>
+    <a href="#models" class="float-nav-btn" data-tooltip="Models">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+        <line x1="12" y1="22.08" x2="12" y2="12"/>
+      </svg>
+    </a>
+    <a href="#protocols" class="float-nav-btn" data-tooltip="Protocols">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+    </a>
+    <a href="#services" class="float-nav-btn" data-tooltip="Services">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </a>
+  </div>
+
+  <script>
+    // Theme toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+    
+    // Check for saved theme preference or prefer system setting
+    const getPreferredTheme = () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) return savedTheme;
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    };
+    
+    html.setAttribute('data-theme', getPreferredTheme());
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+
+    // Close mobile menu when clicking a nav link (CSS handles open/close, this just closes on navigation)
+    const mobileMenuCheckbox = document.getElementById('mobile-menu-toggle');
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenuCheckbox.checked = false;
+        
+        // Expand section if collapsed
+        const targetId = link.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection && targetSection.classList.contains('collapsed')) {
+          targetSection.classList.remove('collapsed');
+        }
+      });
+    });
+
+    // Add copy buttons to all code blocks
+    document.querySelectorAll('.code-content').forEach(codeBlock => {
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-btn';
+      copyBtn.setAttribute('aria-label', 'Copy code');
+      copyBtn.setAttribute('type', 'button');
+      copyBtn.innerHTML = `
+        <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      `;
+      
+      copyBtn.addEventListener('click', async () => {
+        const code = codeBlock.querySelector('code');
+        if (code) {
+          const text = code.innerText;
+          try {
+            await navigator.clipboard.writeText(text);
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy:', err);
+          }
+        }
+      });
+      
+      codeBlock.appendChild(copyBtn);
+    });
+
+    // Collapsible sections
+    document.querySelectorAll('.section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.closest('section');
+        section.classList.toggle('collapsed');
+      });
+    });
+
+    // Highlight active section in floating nav
+    const sections = document.querySelectorAll('section[id]');
+    const floatNavBtns = document.querySelectorAll('.float-nav-btn');
+
+    function updateActiveNav() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      floatNavBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('href') === '#' + current) {
+          btn.classList.add('active');
+        }
+      });
+      
+      // Also update top nav
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Handle float nav clicks - expand collapsed sections
+    floatNavBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetId = btn.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        
+        // Expand section if collapsed
+        if (targetSection && targetSection.classList.contains('collapsed')) {
+          targetSection.classList.remove('collapsed');
+        }
+        
+        // Handle overview click to scroll to top
+        if (targetId === 'overview') {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
+
+    window.addEventListener('scroll', updateActiveNav);
+    updateActiveNav();
+  </script>
+  
+  <!-- Mermaid for architecture diagrams - loaded at end for performance -->
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    // Mermaid theme configuration based on page theme
+    const getMermaidConfig = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      
+      return {
+        startOnLoad: false,
+        theme: isDark ? 'dark' : 'default',
+        themeVariables: isDark ? {
+          // Dark theme variables
+          primaryColor: '#161b22',
+          primaryTextColor: '#c9d1d9',
+          primaryBorderColor: '#30363d',
+          lineColor: '#58a6ff',
+          secondaryColor: '#1c2128',
+          tertiaryColor: '#0d1117',
+          background: '#0d1117',
+          mainBkg: '#161b22',
+          nodeBorder: '#30363d',
+          clusterBkg: '#161b22',
+          clusterBorder: '#30363d',
+          titleColor: '#c9d1d9',
+          edgeLabelBackground: '#161b22',
+          fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans, Helvetica, Arial, sans-serif'
+        } : {
+          // Light theme variables
+          primaryColor: '#f6f8fa',
+          primaryTextColor: '#24292f',
+          primaryBorderColor: '#d0d7de',
+          lineColor: '#0969da',
+          secondaryColor: '#ffffff',
+          tertiaryColor: '#f6f8fa',
+          background: '#ffffff',
+          mainBkg: '#f6f8fa',
+          nodeBorder: '#d0d7de',
+          clusterBkg: '#f6f8fa',
+          clusterBorder: '#d0d7de',
+          titleColor: '#24292f',
+          edgeLabelBackground: '#ffffff',
+          fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans, Helvetica, Arial, sans-serif'
+        }
+      };
+    };
+
+    // Initialize and render mermaid
+    const initMermaid = async () => {
+      if (typeof mermaid === 'undefined') return;
+      
+      mermaid.initialize(getMermaidConfig());
+      await mermaid.run();
+    };
+
+    // Re-render mermaid when theme changes
+    const updateMermaidTheme = async () => {
+      if (typeof mermaid === 'undefined') return;
+      
+      const mermaidElements = document.querySelectorAll('.mermaid');
+      mermaidElements.forEach(el => {
+        // Store original content if not already stored
+        if (!el.getAttribute('data-original')) {
+          el.setAttribute('data-original', el.getAttribute('data-processed') ? '' : el.innerHTML);
+        }
+        // Reset for re-rendering
+        const original = el.getAttribute('data-original');
+        if (original) {
+          el.removeAttribute('data-processed');
+          el.innerHTML = original;
+        }
+      });
+      
+      mermaid.initialize(getMermaidConfig());
+      await mermaid.run();
+    };
+
+    // Initialize on load
+    window.addEventListener('load', initMermaid);
+
+    // Update theme toggle to also update mermaid
+    const originalThemeToggle = document.querySelector('.theme-toggle');
+    if (originalThemeToggle) {
+      originalThemeToggle.addEventListener('click', () => {
+        // Small delay to let the theme change apply first
+        setTimeout(updateMermaidTheme, 50);
+      });
+    }
+  </script>
+</body>
+</html>

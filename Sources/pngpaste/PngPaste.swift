@@ -50,7 +50,7 @@ struct PngPaste: AsyncParsableCommand {
     /// Performs the core paste operation: reading, rendering, and writing the image.
     ///
     /// Orchestrates the clipboard-to-output pipeline using dependency-injected services
-    /// for testability.
+    /// for testability. Uses Swift 6.2's task naming (SE-0469) for improved debugging.
     ///
     /// - Parameters:
     ///   - mode: The output destination mode.
@@ -59,6 +59,7 @@ struct PngPaste: AsyncParsableCommand {
     ///   - renderService: The service used to render images to the target format.
     ///   - outputService: The service used to write the rendered data.
     /// - Throws: `PngPasteError` if any step in the pipeline fails.
+    @MainActor
     private func performPaste(
         mode: OutputMode,
         format: OutputFormat,
@@ -68,7 +69,7 @@ struct PngPaste: AsyncParsableCommand {
     ) async throws(PngPasteError) {
         let image = try clipboardService.readImage()
         let imageType = try clipboardService.imageType(for: image)
-        let data = try await renderService.render(image, imageType: imageType, as: format)
+        let data = try renderService.render(image, imageType: imageType, as: format)
 
         try outputService.write(data, to: mode)
     }

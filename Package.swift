@@ -1,4 +1,4 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 
 import PackageDescription
 
@@ -17,7 +17,8 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+                .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictMemorySafety")
             ]
         ),
         .testTarget(
@@ -26,7 +27,8 @@ let package = Package(
                 "pngpaste"
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+                .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictMemorySafety")
             ]
         )
     ]

@@ -13,7 +13,7 @@ A macOS command-line tool to paste images from the clipboard to files, similar t
 ## Requirements
 
 - macOS 15.0+
-- Swift 6.0+
+- Swift 6.2+
 
 ## Installation
 
@@ -86,11 +86,19 @@ pngpaste photo.jpg
 
 ### Setup
 
-Install development dependencies (SwiftLint, SwiftFormat):
+Install development dependencies:
 
 ```bash
 make setup
 ```
+
+This installs/updates the following tools via Homebrew (if available):
+- **swiftlint** - Swift linter
+- **swiftformat** - Swift code formatter
+- **shellcheck** - Bash script linter
+- **shfmt** - Bash script formatter
+
+If Homebrew is not installed, manual installation links are provided.
 
 ### Build
 
@@ -150,6 +158,7 @@ pngpaste/
 ├── Sources/pngpaste/
 │   ├── PngPaste.swift           # Main CLI entry point
 │   ├── Models/
+│   │   ├── ImageType.swift      # Image type classification
 │   │   ├── OutputFormat.swift   # Image format definitions
 │   │   ├── OutputMode.swift     # Output destination modes
 │   │   └── PngPasteError.swift  # Error types
@@ -169,7 +178,8 @@ pngpaste/
 ├── Package.swift
 ├── Makefile
 ├── scripts/
-│   └── install.sh            # Installation script
+│   ├── install.sh            # Installation script
+│   └── release.sh            # Release automation
 └── LICENSE
 ```
 

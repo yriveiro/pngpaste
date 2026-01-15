@@ -1913,17 +1913,19 @@ JPEG, TIFF"/]
           />
         </svg>
       </a>
-      <button class="float-nav-btn back-to-top" data-tooltip="Back to Top" type="button" aria-label="Back to top">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <polyline points="18 15 12 9 6 15" />
-        </svg>
-      </button>
     </div>
+
+    <!-- Back to Top Button (Right side) -->
+    <button class="back-to-top" data-tooltip="Back to Top" type="button" aria-label="Back to top">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    </button>
 
     <script>
       // Theme toggle
@@ -2059,6 +2061,19 @@ JPEG, TIFF"/]
 
       // Back to top button
       const backToTopBtn = document.querySelector(".back-to-top");
+      
+      // Show/hide back to top button based on scroll position
+      const toggleBackToTop = () => {
+        if (window.scrollY > window.innerHeight) {
+          backToTopBtn.classList.add("visible");
+        } else {
+          backToTopBtn.classList.remove("visible");
+        }
+      };
+      
+      window.addEventListener("scroll", toggleBackToTop);
+      toggleBackToTop();
+      
       backToTopBtn.addEventListener("click", (e) => {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });

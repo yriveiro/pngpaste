@@ -979,6 +979,100 @@ code {
 }
 
 /* ============================================
+   Back to Top Button (Right side)
+   ============================================ */
+.back-to-top {
+  position: fixed;
+  inset-inline-end: var(--space-md);
+  inset-block-end: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: background var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast),
+              opacity var(--transition-fast),
+              visibility var(--transition-fast);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--bg-code);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateX(-4px);
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Tooltip for back-to-top (appears on left) */
+.back-to-top::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  inset-inline-end: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+  pointer-events: none;
+}
+
+.back-to-top::before {
+  content: '';
+  position: absolute;
+  inset-inline-end: calc(100% + 4px);
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-inline-start-color: var(--border);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+  pointer-events: none;
+}
+
+.back-to-top:hover::after,
+.back-to-top:hover::before,
+.back-to-top:focus-visible::after,
+.back-to-top:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ============================================
    Footer
    ============================================ */
 footer {
@@ -1098,6 +1192,24 @@ footer a:focus-visible {
   .float-nav-btn::before {
     display: none;
   }
+  
+  /* Back to top adjustments */
+  .back-to-top {
+    inset-inline-end: var(--space-sm);
+    inset-block-end: var(--space-sm);
+    width: 40px;
+    height: 40px;
+  }
+  
+  .back-to-top svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .back-to-top::after,
+  .back-to-top::before {
+    display: none;
+  }
 }
 
 /* ============================================
@@ -1164,7 +1276,8 @@ footer a:focus-visible {
   
   .tag,
   nav a,
-  .float-nav-btn {
+  .float-nav-btn,
+  .back-to-top {
     border: 2px solid currentColor;
   }
 }
@@ -1176,6 +1289,7 @@ footer a:focus-visible {
   header,
   nav,
   .float-nav,
+  .back-to-top,
   .theme-toggle,
   .mobile-menu-btn,
   .mobile-menu-checkbox,

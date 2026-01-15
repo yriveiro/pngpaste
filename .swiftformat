@@ -1,0 +1,13 @@
+--swiftversion 6.0
+--indent 4
+--indentcase false
+--trimwhitespace always
+--voidtype void
+--nospaceoperators ...,..< 
+--ifdef no-indent
+--stripunusedargs closure-only
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--exclude .build

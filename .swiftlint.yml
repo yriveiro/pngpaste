@@ -2,6 +2,7 @@ disabled_rules:
   - trailing_comma
   - identifier_name
   - type_name
+  - opening_brace  # Conflicts with swift-format style for multi-line conditions
 
 opt_in_rules:
   - empty_count

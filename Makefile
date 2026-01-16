@@ -161,6 +161,7 @@ version: ## Show current version info
 		echo "  make release-minor     # Bump minor version and release"; \
 		echo "  make release-major     # Bump major version and release"; \
 		echo "  make release-dry-run   # Dry run without version bump"; \
+		echo "  make release-publish   # Publish release without version bump"; \
 	else \
 		echo "No .version file found. Create one with: echo '1.0.0' > .version"; \
 	fi
@@ -178,8 +179,9 @@ release-%: ## Create and publish release (use release-patch, release-minor, rele
 		type=="minor" { minor++ ; patch=0 } \
 		type=="patch" { patch++ } \
 		type=="dry-run" { print "$$CURRENT_VERSION" } \
+		type=="publish" { print "$$CURRENT_VERSION" } \
 		{ print major"."minor"."patch }'); \
-	if [ "$$TYPE" != "dry-run" ]; then \
+	if [ "$$TYPE" != "dry-run" ] && [ "$$TYPE" != "publish" ]; then \
 		echo "$$NEW_VERSION" > .version; \
 		echo "Bumped $$TYPE version: $$CURRENT_VERSION → $$NEW_VERSION"; \
 		CURRENT_VERSION=$$NEW_VERSION; \
@@ -191,6 +193,12 @@ release-%: ## Create and publish release (use release-patch, release-minor, rele
 		make build; \
 		echo "DRY RUN: Would create release v$$CURRENT_VERSION"; \
 		NON_INTERACTIVE=true ./scripts/release.sh "v$$CURRENT_VERSION" --dry-run; \
+	elif [ "$$TYPE" = "publish" ]; then \
+		make lint; \
+		make test; \
+		make build; \
+		echo "Publishing release v$$CURRENT_VERSION (no version bump)"; \
+		NON_INTERACTIVE=true ./scripts/release.sh "v$$CURRENT_VERSION"; \
 	else \
 		make check; \
 		make build; \
@@ -203,6 +211,7 @@ release: ## Show release help
 	$(Q)@echo "  make release-minor     # Bump minor version and release"
 	$(Q)@echo "  make release-major     # Bump major version and release"
 	$(Q)@echo "  make release-dry-run   # Dry run without version bump"
+	$(Q)@echo "  make release-publish   # Publish release without version bump"
 
 setup: ## Install/update development dependencies
 	$(Q)echo "Setting up development dependencies..."
